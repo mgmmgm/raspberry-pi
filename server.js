@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const led = require('./ledAPI');
+const led = require('./server/ledAPI');
 
 const app = express();
 app.use(bodyParser.json());
