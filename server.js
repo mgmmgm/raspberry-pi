@@ -1,38 +1,25 @@
 const express = require('express');
+const path = require('path');
 const bodyParser = require('body-parser');
-const led = require('./server/ledAPI');
-
-const app = express();
-app.use(bodyParser.json());
-var server = require('http').Server(app);  
-var io = require('socket.io')(server);
+const router = require('./server/route');
 
 const port = process.env.PORT || 5000;
 
-app.get('/led', (req, res) => {
-  // ledId = req.params.id;
-  let ledState = led.getLedState();
-  res.send({ state: ledState });
+const app = express();
+app.use(bodyParser.json());
+const server = require('http').Server(app);  
+const io = require('socket.io')(server);
+
+
+app.use((req, res, next) => {
+  res.io = io;
+  next();
 });
 
-app.post('/led', (req, res) => {
-  let state = req.body.state;
-  console.log(state);
-  if (state === 'on') {
-    led.toggleLed(1);
-    res.send('led is on');
-  } else if (state === 'off') {
-    led.toggleLed(0);
-    res.send('led is off');
-  } else {
-    res.status(500).send('bad request');
-  }
-})
+app.use(express.static(path.join(__dirname, 'client/build')));
 
-app.delete('/led', (req, res) => {
-  led.unexportOnClose();
-  res.send('close and turn off all');
-});
+app.use('/led', router);
+
 
 io.on('connection', function(client) {  
   console.log('new client has joined', client.id)
