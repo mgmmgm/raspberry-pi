@@ -22,6 +22,14 @@
   font-size: large;
 }
 
+.led-on {
+  color: #27f827;
+}
+
+.led-off {
+  color: red;
+}
+
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }

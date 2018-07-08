@@ -10,9 +10,17 @@ app.use(bodyParser.json());
 const server = require('http').Server(app);  
 const io = require('socket.io')(server);
 
+const firebase = require('./server/api/firebaseAPI');
+let dbFirebase;
 
 app.use((req, res, next) => {
   res.io = io;
+  next();
+});
+
+app.use((req, res, next) => {
+  firebase.initFirebase();
+  dbFirebase = firebase.getDatabase();
   next();
 });
 
