@@ -1,20 +1,9 @@
 import * as firebase from 'firebase/app';
 import 'firebase/database';
 
-// Initialize Firebase
-const config = {
-    apiKey: "AIzaSyB5wYwvr8Xv5mtF3lrfrBGZ5tk-th-tg_Y",
-    authDomain: "raspberrypi-7e834.firebaseapp.com",
-    databaseURL: "https://raspberrypi-7e834.firebaseio.com",
-    projectId: "raspberrypi-7e834",
-    storageBucket: "raspberrypi-7e834.appspot.com",
-    messagingSenderId: "517689121101"
+let db;
 
-};
-
-const db;
-
-function initFirebase() {
+function initFirebase(config) {
     console.log('init firebase', firebase.apps.length);
     try {
         let defaultDB = firebase.initializeApp(config);

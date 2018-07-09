@@ -22,7 +22,7 @@ router.get('/', (req, res) => {
     } else {
       res.status(500).send('bad request');
     }
-  })
+  });
   
   router.delete('/', (req, res) => {
     led.unexportOnClose();

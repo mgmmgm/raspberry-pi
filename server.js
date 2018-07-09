@@ -10,19 +10,22 @@ app.use(bodyParser.json());
 const server = require('http').Server(app);  
 const io = require('socket.io')(server);
 
-const firebase = require('./server/api/firebaseAPI');
+const firebaseConfig = require('./server/configuration/firebaseConfiguration');
+// const firebase = require('./server/api/firebaseAPI');
 let dbFirebase;
+
+(() => {
+    console.log('config ', firebaseConfig.getFirebaseConfiguration());
+    firebase.initFirebase(firebaseConfig.getFirebaseConfiguration());
+    dbFirebase = firebase.getDatabase();
+})();
+
 
 app.use((req, res, next) => {
   res.io = io;
   next();
 });
 
-app.use((req, res, next) => {
-  firebase.initFirebase();
-  dbFirebase = firebase.getDatabase();
-  next();
-});
 
 app.use(express.static(path.join(__dirname, 'client/build')));
 
@@ -30,7 +33,7 @@ app.use('/led', router);
 
 
 io.on('connection', function(client) {  
-  console.log('new client has joined', client.id)
+  console.log('new client has joined', client.id);
   io.emit('message-from-server', 'Welcome ' + client.id);
 
   client.on('event-from-client', function(data) {

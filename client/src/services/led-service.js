@@ -1,6 +1,6 @@
 
-getLedState = () => {
+const getLedState = () => {
     return 1;
-}
+};
 
-export default {getLedState}
+export default {getLedState};

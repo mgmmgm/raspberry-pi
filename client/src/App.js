@@ -8,17 +8,12 @@ class App extends Component {
   state = {
     ledState: 0,
     ledSrc: ''
-  }
+  };
 
-  constructor() {
-    super();
-    this.initState();
-  }
-
-  initState = () => {
+  componentDidMount = () => {
     let ledState = ledService.getLedState();
     this.setState({ledState, ledSrc: ledState ? '/images/led_on.jpg' : '/images/led_off.png'});
-  }
+  };
 
   changeLedState = () => {
     if (this.state.ledState) {
@@ -26,7 +21,7 @@ class App extends Component {
     } else {
       this.setState({ledState: 1, ledSrc: '/images/led_on.jpg'});
     }
-  }
+  };
 
   render() {
     return (
