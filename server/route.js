@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const led = require('./api/ledAPI');
+// const led = require('./api/ledAPI');
 
 router.get('/', (req, res) => {
     // ledId = req.params.id;
-    let ledState = led.getLedState();
+    let ledState = 1;//led.getLedState();
     res.send({ state: ledState });
   });
   

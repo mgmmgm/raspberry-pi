@@ -11,7 +11,7 @@ const server = require('http').Server(app);
 const io = require('socket.io')(server);
 
 const firebaseConfig = require('./server/configuration/firebaseConfiguration');
-// const firebase = require('./server/api/firebaseAPI');
+const firebase = require('./server/api/firebaseAPI');
 let dbFirebase;
 
 (() => {
@@ -23,6 +23,7 @@ let dbFirebase;
 
 app.use((req, res, next) => {
   res.io = io;
+  res.dbFirebase = dbFirebase; 
   next();
 });
 

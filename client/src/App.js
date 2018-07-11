@@ -11,8 +11,12 @@ class App extends Component {
   };
 
   componentDidMount = () => {
-    let ledState = ledService.getLedState();
+    ledService.getLedState().then(res => {
+    let ledState = res.state;
     this.setState({ledState, ledSrc: ledState ? '/images/led_on.jpg' : '/images/led_off.png'});
+    }, error => {
+      console.error(error);
+    });
   };
 
   changeLedState = () => {
