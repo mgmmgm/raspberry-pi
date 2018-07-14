@@ -19,11 +19,13 @@ class App extends Component {
     });
   };
 
-  changeLedState = () => {
-    if (this.state.ledState) {
-      this.setState({ledState: 0, ledSrc: '/images/led_off.png'});
-    } else {
+  changeLedState = async() => {
+    const res = await ledService.setLedState(!this.state.ledState);
+    console.log(res.statusFromServer);
+    if (res.statusFromServer) {
       this.setState({ledState: 1, ledSrc: '/images/led_on.jpg'});
+    } else {
+      this.setState({ledState: 0, ledSrc: '/images/led_off.png'});
     }
   };
 

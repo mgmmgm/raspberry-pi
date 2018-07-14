@@ -7,7 +7,7 @@ require('firebase/database');
 let db;
 
 function initFirebase(config) {
-    console.log('init firebase', firebase.apps.length);
+    // console.log('init firebase', firebase.apps.length);
     try {
         // let defaultDB = firebase.initializeApp(config);
         // db = defaultDB.database();
@@ -20,17 +20,16 @@ function initFirebase(config) {
             console.error('Firebase initialization error', err.stack)
         }
     }
-    return firebase;
 }
 
-function getDatabase() {
-    return db.ref('data');
+readDataFromDB = (link) => {
+    return db.ref(link).once('value');
 }
 
-function readDataFromDB(dbFirebase, link) {
-    
+writeDataToDB = (link, data) => {
+    return db.ref(link).set(data);
 }
 
 module.exports = {
-    initFirebase, getDatabase
+    initFirebase, readDataFromDB, writeDataToDB
 }

@@ -12,18 +12,14 @@ const io = require('socket.io')(server);
 
 const firebaseConfig = require('./server/configuration/firebaseConfiguration');
 const firebase = require('./server/api/firebaseAPI');
-let dbFirebase;
 
 (() => {
-    console.log('config ', firebaseConfig.getFirebaseConfiguration());
-    firebase.initFirebase(firebaseConfig.getFirebaseConfiguration());
-    dbFirebase = firebase.getDatabase();
+  firebase.initFirebase(firebaseConfig.getFirebaseConfiguration());
 })();
 
 
 app.use((req, res, next) => {
   res.io = io;
-  res.dbFirebase = dbFirebase; 
   next();
 });
 

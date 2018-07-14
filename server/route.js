@@ -1,24 +1,30 @@
 const express = require('express');
 const router = express.Router();
 // const led = require('./api/ledAPI');
+const firebaseAPI = require('./api/firebaseAPI');
+const link = 'lights/led1';
 
-router.get('/', (req, res) => {
+router.get('/', async(req, res) => {
     // ledId = req.params.id;
-    let ledState = 1;//led.getLedState();
+    let snapshot = await firebaseAPI.readDataFromDB(link);
+    console.log(snapshot.val());
+    let ledState = snapshot.val();//led.getLedState();
     res.send({ state: ledState });
   });
   
-  router.post('/', (req, res) => {
+  router.post('/', async(req, res) => {
     let state = req.body.state;
     console.log(state);
     if (state === 'on') {
-      led.toggleLed(1);
+      //led.toggleLed(1);
+      await firebaseAPI.writeDataToDB(link, 1);
       res.io.emit('message-from-server', 'Led is on');
-      res.send('led is on');
+      res.send({statusFromServer: 1});
     } else if (state === 'off') {
-      led.toggleLed(0);
+      //led.toggleLed(0);
+      await firebaseAPI.writeDataToDB(link, 0);
       res.io.emit('message-from-server', 'Led is off');
-      res.send('led is off');
+      res.send({statusFromServer: 0});
     } else {
       res.status(500).send('bad request');
     }
