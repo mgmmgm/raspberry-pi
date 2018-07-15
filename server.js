@@ -12,10 +12,15 @@ const io = require('socket.io')(server);
 
 const firebaseConfig = require('./server/configuration/firebaseConfiguration');
 const firebase = require('./server/api/firebaseAPI');
+const myIoAPI = require('./server/api/socketAPI');
 
 (() => {
   firebase.initFirebase(firebaseConfig.getFirebaseConfiguration());
+  myIoAPI.setIO(io);
+  firebase.listenToUpdates('lights/led1', myIoAPI.sendUpdateToAllClients);
 })();
+
+
 
 
 app.use((req, res, next) => {
@@ -31,7 +36,7 @@ app.use('/led', router);
 
 io.on('connection', function(client) {  
   console.log('new client has joined', client.id);
-  io.emit('message-from-server', 'Welcome ' + client.id);
+  //io.emit('message-from-server', 'Welcome ' + client.id);
 
   client.on('event-from-client', function(data) {
       console.log('A client sent us this dumb message:', data.message);

@@ -26,10 +26,14 @@ readDataFromDB = (link) => {
     return db.ref(link).once('value');
 }
 
+listenToUpdates = async(link, callbackFn) => {
+    db.ref(link).on('value', callbackFn);
+}
+
 writeDataToDB = (link, data) => {
     return db.ref(link).set(data);
 }
 
 module.exports = {
-    initFirebase, readDataFromDB, writeDataToDB
+    initFirebase, readDataFromDB, writeDataToDB, listenToUpdates
 }
